@@ -2,20 +2,22 @@ function giveItBackLater (value, callback) {
     setTimeout(() => callback(value), 1000)
 }
 
-function promiseToGiveItBackLater (value) {
+function promiseToGiveItBackLater(value) {
     return new Promise((resolve, reject) => {
-        const result = giveItBackLater(value)
-        resolve(result)
+        giveItBackLater(value, (value) => {
+            resolve(value);
+        })
     })
-
 }
 
-function addSomePromises (promise) {
-    promise.then( (result) => {
-        return Promise.resolve(result * 2)
-    }, (error) => {
-        return Promise.reject(error * 3)
-    })
+function addSomePromises(somePromise) {
+    return somePromise
+        .then((value) => {
+            return value + value;
+        })
+        .catch((value) => {
+            return value + value + value;
+        });
 }
 
 module.exports = {giveItBackLater, addSomePromises, promiseToGiveItBackLater}
